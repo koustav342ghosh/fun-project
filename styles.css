@@ -1,0 +1,231 @@
+:root {
+  --bg-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #f6d365 100%);
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --primary: #ff4b8b;
+  --primary-dark: #e03c79;
+  --text-main: #3d1f2b;
+  --text-muted: #7a4b5b;
+  --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.16);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg-gradient);
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  color: var(--text-main);
+}
+
+#app {
+  width: 100%;
+  max-width: 480px;
+  padding: 16px;
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 28px 22px 24px;
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: floatIn 0.6s ease-out;
+  max-width: 100%;
+}
+
+h1,
+h2 {
+  margin: 0 0 12px;
+}
+
+p {
+  margin: 0 0 16px;
+  line-height: 1.4;
+}
+
+.small {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  transform: translateX(20px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.screen.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease,
+    color 0.12s ease;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+.btn.primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(255, 75, 139, 0.4);
+}
+
+.btn.primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn.ghost {
+  background: transparent;
+  border: 1px solid rgba(61, 31, 43, 0.16);
+  color: var(--text-main);
+  backdrop-filter: blur(10px);
+}
+
+.options {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.options .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+.valentine-options {
+  margin-top: 16px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  min-height: 160px;
+}
+
+#yesBtn {
+  min-width: 120px;
+  position: relative;
+  z-index: 1;
+}
+
+#noBtn {
+  min-width: 90px;
+  position: absolute;
+  z-index: 2;
+  touch-action: none;
+}
+
+/* Celebration overlay */
+.celebrate {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.celebrate-inner {
+  background: #fff;
+  padding: 18px 16px 14px;
+  border-radius: 18px;
+  text-align: center;
+  max-width: 320px;
+  box-shadow: var(--shadow-soft);
+}
+
+.celebrate-inner img {
+  width: 180px;
+  max-width: 100%;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.celebrate.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Make sure layout works on small phones */
+@media (max-width: 400px) {
+  .card {
+    padding-inline: 18px;
+  }
+
+  h1,
+  h2 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Desktop / larger screens: use more of the screen */
+@media (min-width: 768px) {
+  #app {
+    max-width: 900px;
+    padding: 32px;
+    height: 100vh;
+  }
+
+  .screen {
+    padding: 32px;
+  }
+
+  .card {
+    min-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .valentine-options {
+    min-height: 220px;
+  }
+}
+

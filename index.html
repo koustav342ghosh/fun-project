@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Be My Valentine 💌</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main id="app">
+      <!-- Intro Screen -->
+      <section class="screen active" data-screen="intro">
+        <div class="card">
+          <h1>Hi, you! 💖</h1>
+          <p>
+            I made this little page just for you.<br />
+            Answer a few fun questions and don’t forget to be honest 😉
+          </p>
+          <button class="btn primary" data-next>Start</button>
+        </div>
+      </section>
+
+      <!-- Question Screens -->
+      <section class="screen" data-screen="q1">
+        <div class="card">
+          <h2>Question 1</h2>
+          <p>When did you first suspect that I like you a *little* too much? 😏</p>
+          <div class="options">
+            <button class="btn option" data-correct>From the very beginning</button>
+            <button class="btn option" data-correct>After a few chats</button>
+            <button class="btn option" data-correct>When I kept texting you</button>
+            <button class="btn option" data-correct>Still pretending you don’t know</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="q2">
+        <div class="card">
+          <h2>Question 2</h2>
+          <p>Which of these best describes us?</p>
+          <div class="options">
+            <button class="btn option" data-correct>Partners in crime 🕵️‍♀️🕵️‍♂️</button>
+            <button class="btn option" data-correct>Drama + Comedy = Us</button>
+            <button class="btn option" data-correct>Perfect team ✨</button>
+            <button class="btn option" data-correct>All of the above</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="q3">
+        <div class="card">
+          <h2>Question 3</h2>
+          <p>What’s the best thing about me? (Trick question 😌)</p>
+          <div class="options">
+            <button class="btn option" data-correct>My smile</button>
+            <button class="btn option" data-correct>My terrible jokes</button>
+            <button class="btn option" data-correct>The way I care about you</button>
+            <button class="btn option" data-correct>All of the above (obviously)</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="q4">
+        <div class="card">
+          <h2>Question 4</h2>
+          <p>Perfect date with me would be…</p>
+          <div class="options">
+            <button class="btn option" data-correct>Movie + popcorn</button>
+            <button class="btn option" data-correct>Long walk & deep talks</button>
+            <button class="btn option" data-correct>Eating everything in sight</button>
+            <button class="btn option" data-correct>Anything, as long as it’s you</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="q5">
+        <div class="card">
+          <h2>Question 5</h2>
+          <p>How excited are you to see the last question? 👀</p>
+          <div class="options">
+            <button class="btn option" data-correct>Veryyy</button>
+            <button class="btn option" data-correct>More than pizza</button>
+            <button class="btn option" data-correct>Can’t wait!</button>
+            <button class="btn option" data-correct>Show me already!</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Valentine Question Screen -->
+      <section class="screen" data-screen="valentine">
+        <div class="card">
+          <h2>Final Question 💘</h2>
+          <p>Will you be my Valentine?</p>
+          <div class="valentine-options">
+            <button id="yesBtn" class="btn primary">Yes 💕</button>
+            <button id="noBtn" class="btn ghost">No 😈</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Final Note Screen -->
+      <section class="screen" data-screen="final">
+        <div class="card">
+          <h2>Yayyyy! 🎉</h2>
+          <p>
+            Thank you for saying yes. You officially owe me<br />
+            unlimited hugs, smiles, and a lifetime of putting up with me. 💌
+          </p>
+          <p class="small">
+            (Also… screenshot this page so I can keep it forever 😚)
+          </p>
+        </div>
+      </section>
+
+      <!-- Celebration Overlay -->
+      <div id="celebrate" class="celebrate hidden">
+        <div class="celebrate-inner">
+          <img
+            src="https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif"
+            alt="Hurray!"
+          />
+          <p>Hurrraaay! That’s absolutely correct! 🎊</p>
+        </div>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+

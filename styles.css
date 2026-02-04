@@ -285,10 +285,18 @@ p {
 
   #yesBtn {
     min-width: 120px;
+    /* Ensure transform can grow unlimited on mobile */
+    max-width: none !important;
+    transform-origin: center center;
   }
 
   #noBtn {
     min-width: 100px;
+  }
+
+  /* Ensure container allows overflow for growing Yes button */
+  .valentine-options {
+    overflow: visible;
   }
 }
 

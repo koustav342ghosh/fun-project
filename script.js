@@ -85,7 +85,9 @@
     const container = noBtn.parentElement;
     let lastPointer = { x: 0, y: 0 };
     let lastFleeAt = 0;
-    const FLEE_COOLDOWN_MS = 420;
+    // Shorter cooldown on mobile for more responsive movement
+    const isMobile = window.innerWidth <= 480;
+    const FLEE_COOLDOWN_MS = isMobile ? 280 : 420;
 
     function clamp(v, min, max) {
       return Math.min(Math.max(v, min), max);
@@ -111,9 +113,16 @@
 
       // Make "Yes" grow slowly and mostly horizontally - NO CAP, keeps growing forever!
       // Growth rate: 0.04 per attempt horizontally, 0.013 vertically
-      const scaleX = 1 + noAttempts * 0.04; // Unlimited growth - no Math.min cap
-      const scaleY = 1 + noAttempts * 0.013; // Unlimited growth - no Math.min cap
-      yesBtn.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
+      // After 15 attempts: scaleX = 1.6, scaleY = 1.195
+      // After 30 attempts: scaleX = 2.2, scaleY = 1.39
+      // After 50 attempts: scaleX = 3.0, scaleY = 1.65
+      // It will keep growing indefinitely!
+      const scaleX = 1 + noAttempts * 0.04;
+      const scaleY = 1 + noAttempts * 0.013;
+      
+      // Directly set transform - no limits, ensure it works on mobile too
+      yesBtn.style.setProperty('transform', `scaleX(${scaleX}) scaleY(${scaleY})`, 'important');
+      yesBtn.style.setProperty('-webkit-transform', `scaleX(${scaleX}) scaleY(${scaleY})`, 'important');
 
       // Change the "No" button text each time (more variety)
       // Use modulo so it keeps changing instead of getting stuck on the last message.
@@ -167,9 +176,15 @@
       dx /= mag;
       dy /= mag;
 
-      // Big jump so it's hard to catch
-      const jump = 240 + Math.random() * 200;
-      const jitter = 70;
+      // More random movement - sometimes jump far, sometimes medium, always unpredictable
+      // On mobile, make jumps consistently larger for better randomness
+      const isMobile = window.innerWidth <= 480;
+      const baseJump = isMobile ? 180 : 240;
+      const jumpVariation = isMobile ? 250 : 200;
+      // Add more randomness - sometimes jump very far, sometimes medium
+      const jumpMultiplier = Math.random() < 0.3 ? 1.5 : (Math.random() < 0.6 ? 1.0 : 0.7);
+      const jump = (baseJump + Math.random() * jumpVariation) * jumpMultiplier;
+      const jitter = isMobile ? 100 : 70; // More jitter on mobile for randomness
 
       const currentLeft = noRect.left - contRect.left;
       const currentTop = noRect.top - contRect.top;
@@ -179,10 +194,21 @@
       let noBtnWidth = noRect.width;
       let noBtnHeight = noRect.height;
 
+      // Add extra randomness - sometimes move in completely different direction
+      const randomDirection = Math.random() < 0.25; // 25% chance to ignore pointer direction
+      if (randomDirection) {
+        dx = (Math.random() - 0.5) * 2;
+        dy = (Math.random() - 0.5) * 2;
+        const newMag = Math.hypot(dx, dy) || 1;
+        dx /= newMag;
+        dy /= newMag;
+      }
+
       // Try to find a position that avoids Yes button area
       do {
-        left = currentLeft + dx * jump + (Math.random() - 0.5) * jitter;
-        top = currentTop + dy * jump + (Math.random() - 0.5) * jitter;
+        // More random positioning with larger jitter
+        left = currentLeft + dx * jump + (Math.random() - 0.5) * jitter * 1.5;
+        top = currentTop + dy * jump + (Math.random() - 0.5) * jitter * 1.5;
 
         // Clamp to container bounds
         left = clamp(left, padding, Math.max(maxLeft, padding));

@@ -109,9 +109,10 @@
     function registerFlee() {
       noAttempts += 1;
 
-      // Make "Yes" grow more horizontally, less vertically (looks better)
-      const scaleX = Math.min(1 + noAttempts * 0.08, 1.6);
-      const scaleY = Math.min(1 + noAttempts * 0.03, 1.2);
+      // Make "Yes" grow slowly and mostly horizontally.
+      // Target: keep increasing up to ~15 chases, then cap.
+      const scaleX = Math.min(1 + noAttempts * 0.04, 1.6); // 15 attempts => ~1.6x
+      const scaleY = Math.min(1 + noAttempts * 0.013, 1.2); // gentle vertical growth
       yesBtn.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
 
       // Change the "No" button text each time (more variety)

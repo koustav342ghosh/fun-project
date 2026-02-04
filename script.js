@@ -110,9 +110,9 @@
       noAttempts += 1;
 
       // Make "Yes" grow slowly and mostly horizontally.
-      // Target: keep increasing up to ~15 chases, then cap.
-      const scaleX = Math.min(1 + noAttempts * 0.04, 1.6); // 15 attempts => ~1.6x
-      const scaleY = Math.min(1 + noAttempts * 0.013, 1.2); // gentle vertical growth
+      // Removed cap - keeps growing indefinitely with same rate
+      const scaleX = 1 + noAttempts * 0.04; // No cap, keeps growing
+      const scaleY = 1 + noAttempts * 0.013; // gentle vertical growth, no cap
       yesBtn.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
 
       // Change the "No" button text each time (more variety)

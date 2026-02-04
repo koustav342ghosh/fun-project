@@ -109,14 +109,36 @@
     function registerFlee() {
       noAttempts += 1;
 
-      // Make "Yes" grow gently (and cap it so it never looks huge)
-      const scale = Math.min(1 + noAttempts * 0.04, 1.35);
-      yesBtn.style.transform = `scale(${scale})`;
+      // Make "Yes" grow more horizontally, less vertically (looks better)
+      const scaleX = Math.min(1 + noAttempts * 0.08, 1.6);
+      const scaleY = Math.min(1 + noAttempts * 0.03, 1.2);
+      yesBtn.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
 
       // Change the "No" button text each time (more variety)
       // Use modulo so it keeps changing instead of getting stuck on the last message.
       const idx = (noAttempts - 1) % noMessages.length;
       noBtn.textContent = noMessages[idx];
+    }
+
+    function isPointInYesButton(x, y) {
+      const yesRect = yesBtn.getBoundingClientRect();
+      return (
+        x >= yesRect.left &&
+        x <= yesRect.right &&
+        y >= yesRect.top &&
+        y <= yesRect.bottom
+      );
+    }
+
+    function getYesButtonBounds() {
+      const yesRect = yesBtn.getBoundingClientRect();
+      const contRect = container.getBoundingClientRect();
+      return {
+        left: yesRect.left - contRect.left - 20, // extra padding
+        right: yesRect.right - contRect.left + 20,
+        top: yesRect.top - contRect.top - 20,
+        bottom: yesRect.bottom - contRect.top + 20,
+      };
     }
 
     function fleeFrom(clientX, clientY, force = false) {
@@ -129,8 +151,9 @@
 
       const contRect = container.getBoundingClientRect();
       const noRect = noBtn.getBoundingClientRect();
+      const yesBounds = getYesButtonBounds();
 
-      const padding = 10;
+      const padding = 12;
       const maxLeft = contRect.width - noRect.width - padding;
       const maxTop = contRect.height - noRect.height - padding;
 
@@ -144,27 +167,77 @@
       dy /= mag;
 
       // Big jump so it's hard to catch
-      const jump = 220 + Math.random() * 220;
-      const jitter = 60;
+      const jump = 240 + Math.random() * 200;
+      const jitter = 70;
 
       const currentLeft = noRect.left - contRect.left;
       const currentTop = noRect.top - contRect.top;
 
-      const left = currentLeft + dx * jump + (Math.random() - 0.5) * jitter;
-      const top = currentTop + dy * jump + (Math.random() - 0.5) * jitter;
+      let attempts = 0;
+      let left, top;
+      let noBtnWidth = noRect.width;
+      let noBtnHeight = noRect.height;
 
-      noBtn.style.left = `${clamp(left, padding, Math.max(maxLeft, padding))}px`;
-      noBtn.style.top = `${clamp(top, padding, Math.max(maxTop, padding))}px`;
+      // Try to find a position that avoids Yes button area
+      do {
+        left = currentLeft + dx * jump + (Math.random() - 0.5) * jitter;
+        top = currentTop + dy * jump + (Math.random() - 0.5) * jitter;
+
+        // Clamp to container bounds
+        left = clamp(left, padding, Math.max(maxLeft, padding));
+        top = clamp(top, padding, Math.max(maxTop, padding));
+
+        // Check if this position overlaps with Yes button
+        const noLeft = left;
+        const noRight = left + noBtnWidth;
+        const noTop = top;
+        const noBottom = top + noBtnHeight;
+
+        const overlapsYes =
+          noRight >= yesBounds.left &&
+          noLeft <= yesBounds.right &&
+          noBottom >= yesBounds.top &&
+          noTop <= yesBounds.bottom;
+
+        if (!overlapsYes || attempts > 8) break;
+        attempts++;
+
+        // If overlapping, try moving further away
+        dx += (Math.random() - 0.5) * 0.3;
+        dy += (Math.random() - 0.5) * 0.3;
+        const newMag = Math.hypot(dx, dy) || 1;
+        dx /= newMag;
+        dy /= newMag;
+      } while (attempts < 10);
+
+      noBtn.style.left = `${left}px`;
+      noBtn.style.top = `${top}px`;
 
       registerFlee();
     }
 
-    // Initial placement (so absolute positioning starts nicely)
+    // Initial placement (so absolute positioning starts nicely, avoiding Yes button)
     requestAnimationFrame(() => {
       if (!container) return;
-      // place it slightly to the right of center to start
       const contRect = container.getBoundingClientRect();
-      placeNoButton(contRect.width * 0.62, contRect.height * 0.25);
+      const yesBounds = getYesButtonBounds();
+      
+      // Try to place No button away from Yes button initially
+      let initialLeft = contRect.width * 0.7;
+      let initialTop = contRect.height * 0.3;
+      
+      // If it would overlap, move it
+      if (
+        initialLeft + noBtn.offsetWidth >= yesBounds.left &&
+        initialLeft <= yesBounds.right &&
+        initialTop + noBtn.offsetHeight >= yesBounds.top &&
+        initialTop <= yesBounds.bottom
+      ) {
+        initialLeft = contRect.width * 0.15;
+        initialTop = contRect.height * 0.6;
+      }
+      
+      placeNoButton(initialLeft, initialTop);
     });
 
     // Desktop: actively flee when pointer gets close (hard to catch)

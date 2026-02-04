@@ -109,10 +109,10 @@
     function registerFlee() {
       noAttempts += 1;
 
-      // Make "Yes" grow slowly and mostly horizontally.
-      // Removed cap - keeps growing indefinitely with same rate
-      const scaleX = 1 + noAttempts * 0.04; // No cap, keeps growing
-      const scaleY = 1 + noAttempts * 0.013; // gentle vertical growth, no cap
+      // Make "Yes" grow slowly and mostly horizontally - NO CAP, keeps growing forever!
+      // Growth rate: 0.04 per attempt horizontally, 0.013 vertically
+      const scaleX = 1 + noAttempts * 0.04; // Unlimited growth - no Math.min cap
+      const scaleY = 1 + noAttempts * 0.013; // Unlimited growth - no Math.min cap
       yesBtn.style.transform = `scaleX(${scaleX}) scaleY(${scaleY})`;
 
       // Change the "No" button text each time (more variety)

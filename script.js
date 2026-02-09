@@ -22,7 +22,6 @@
     "Final answer? 😏",
     "Locking in… NO? 🤨",
     "This isn’t KBC 😭",
-    "Plot twist: only Yes works ✨",
     "Nice try 😜",
     "Come onnnn 🫶",
     "Be honest 😌",
@@ -76,7 +75,7 @@
           celebrate.classList.add("hidden");
           goNext();
         }, 180);
-      }, 3400); // Show for 3.4 seconds total (was 1.4s, now +2 seconds)
+      }, 1400);
     });
   });
 

@@ -75,7 +75,7 @@
           celebrate.classList.add("hidden");
           goNext();
         }, 180);
-      }, 1000);
+      }, 1400);
     });
   });
 

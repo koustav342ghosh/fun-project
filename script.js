@@ -76,7 +76,7 @@
           celebrate.classList.add("hidden");
           goNext();
         }, 180);
-      }, 1400);
+      }, 3400); // Show for 3.4 seconds total (was 1.4s, now +2 seconds)
     });
   });
 
